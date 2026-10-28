@@ -1,0 +1,13 @@
+# Senarai putih: abaikan semua, kecuali yang disenaraikan di bawah.
+# docs/ (dokumen kontrak, BQ berharga, SST), output/, tetapan bot dan CLAUDE.local.md TIDAK dikongsi.
+/*
+!/.gitignore
+!/CLAUDE.md
+!/README.md
+!/scripts/
+!/.claude/
+/.claude/*
+!/.claude/skills/
+!/.claude/agents/
+__pycache__/
+*.pyc
