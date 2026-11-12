@@ -11,3 +11,4 @@
 !/.claude/agents/
 __pycache__/
 *.pyc
+!/sistem-reka-bentuk/
