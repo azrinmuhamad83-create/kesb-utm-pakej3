@@ -59,3 +59,21 @@ py -3.12 -m pip install openpyxl python-docx pymupdf
 - `Guna agent drawing-reader untuk baca drawing`
 - `Guna agent qa-reviewer untuk semak PQP`
 - `py -3.12 scripts/build_pqp_docx.py` (jana semula Word selepas ubah draf)
+
+## Papan pemuka harian (output/Papan-Pemuka.html)
+`scripts/build_papan_pemuka.py` menjana satu fail HTML (tanpa internet) daripada `output/Jadual-Tindakan-PM.xlsx`, `output/Daftar-Kelulusan-Bahan.xlsx`, `output/Daftar-Item-Terbuka.xlsx` dan `output/log_isu.json`. Fail sumber hanya dibaca, tidak diubah.
+
+Skrip mencari folder induk yang ada `output/log_isu.json`, jadi ia boleh dijalankan dari folder `UTM PAKEJ 3 FINAL` tanpa ubah laluan.
+
+Jana sekali (tangan):
+```
+py -3.12 scripts\build_papan_pemuka.py
+```
+
+Jana automatik setiap pagi jam 7:00 (Windows Task Scheduler):
+1. Buka Task Scheduler, pilih Create Task, nama `KESB Papan Pemuka`.
+2. Triggers: Daily, 7:00 AM.
+3. Actions: Start a program, isi `scripts\jana-papan-pemuka.bat` (guna laluan penuh ke folder `UTM PAKEJ 3 FINAL`), Start in: folder yang sama.
+4. Tick "Run whether user is logged on or not" jika PC dibiarkan terkunci.
+
+Fail `.bat` menulis log ke `output\papan-pemuka.log`. Perlu `py -3.12` dan `openpyxl` (lihat Persediaan di atas).
