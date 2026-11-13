@@ -1,15 +1,19 @@
 """Jana Lampiran E: Jadual Penyelenggaraan & Kalibrasi serta Jadual Pemeriksaan & Ujian Loji (Prelim 3.0 (iv)).
 
 Guna:  py -3.12 scripts/build_lampiran_e.py
-Hasil: output/Lampiran-E-Jadual-Loji.xlsx  (KESB/UTM-P3/PLT/001)
+Hasil: output/Lampiran-E-Jadual-Loji-P3-FINAL.xlsx  (KESB/UTM-P3/PLT/001)
 
 Senarai loji & peralatan dikumpul daripada Seksyen 5.1 method statement MS-01 – MS-14.
 Bilangan unit, no. siri dan kekerapan yang tiada dalam dokumen kontrak ditanda [PERLU SAHKAN].
 """
+import sys
 from pathlib import Path
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+
+sys.path.insert(0, str(Path(__file__).parent))
+import penamaan  # noqa: E402
 
 PROJEK = "UTM – Baikpulih Makmal P&P di Bangunan Akademik (RP1-RMKe-13), Pakej 3 – No. kontrak TN/2026-21/D-1/SP/BPA"
 HEAD = PatternFill("solid", fgColor="1F4E78")
@@ -127,7 +131,7 @@ def main():
                  "Kalibrasi belum luput", own, "KESB-QF-10",
                  "Label \"JANGAN GUNA\"; nilai semula keputusan ujian sejak kalibrasi terakhir (CP-QC 10.1)"])
 
-    out = Path("output/Lampiran-E-Jadual-Loji.xlsx")
+    out = penamaan.keluaran("Lampiran-E-Jadual-Loji", ".xlsx")
     wb.save(out)
     print(f"Siap: {out}  ({len(LOJI)} loji, {len(PERALATAN)} peralatan ukur & ujian)")
 

@@ -132,7 +132,7 @@ Rujukan: CP-QC KESB/UTM-P3/CP-QC/001 Seksyen 8.4 dan 8.5; Lampiran K Carta K5 da
 |---|---|---|---|
 | 1 | Luluskan dan hantar surat permohonan wakil pengguna kepada S.O. (fail "Surat-SO-Wakil-Pengguna-WhatsApp") bersama Lampiran A & B | Pengurus Projek | Surat; KESB-QF-15 Transmittal |
 | 2 | Terima Lampiran A yang diisi dan disahkan S.O. – nama, jawatan, no. telefon & persetujuan setiap wakil | Kerani Tapak | Fail surat |
-| 3 | Masukkan maklumat wakil ke Daftar Lokasi (ITP.xlsx sheet "Daftar Lokasi") | Kerani Tapak | Daftar Lokasi |
+| 3 | Masukkan maklumat wakil ke Daftar Lokasi (ITP-P3-FINAL.xlsx sheet "Daftar Lokasi") | Kerani Tapak | Daftar Lokasi |
 | 4 | Wakil yang tidak bersetuju dimasukkan ke group: dihubungi melalui telefon / e-mel sahaja; catat dalam Daftar Lokasi ("Dalam group WhatsApp" = T) | Kerani Tapak | Daftar Lokasi |
 
 ## 2. Buka WhatsApp Community & group blok
