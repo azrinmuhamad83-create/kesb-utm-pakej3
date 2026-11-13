@@ -1,17 +1,21 @@
 """Jana Lampiran K: Carta Alir Sistem Kualiti (PDF, A4 landskap) untuk CP-QC.
 
 Guna:  py -3.12 scripts/build_carta_alir.py
-Hasil: output/Lampiran-K-Carta-Alir.pdf
+Hasil: output/Lampiran-K-Carta-Alir-P3-FINAL.pdf
 Kandungan carta diambil daripada CP-QC (output/CP-QC-draf.md); kemas kini di sini jika proses dalam CP-QC berubah.
 
 Jenis nod: s = mula, p = proses, d = keputusan, e = tamat.
 Cabang keputusan: {"label": "Tidak", "loop": i} (kembali ke nod i) atau {"label": "Ya", "side": "teks"} (tindakan sisi).
 """
+import sys
 from pathlib import Path
 
 import fitz
 
-OUT = Path("output/Lampiran-K-Carta-Alir.pdf")
+sys.path.insert(0, str(Path(__file__).parent))
+import penamaan  # noqa: E402
+
+OUT = penamaan.keluaran("Lampiran-K-Carta-Alir", ".pdf")
 W, H = 842, 595
 FONT = "C:/Windows/Fonts/arial.ttf"
 FONT_B = "C:/Windows/Fonts/arialbd.ttf"

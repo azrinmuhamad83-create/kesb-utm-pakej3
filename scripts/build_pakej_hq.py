@@ -2,7 +2,7 @@
 
 Guna:  py -3.12 scripts/build_pakej_hq.py
 Perlu: Microsoft Word & Excel (tukar ke PDF), PyMuPDF, PyYAML, python-docx, openpyxl.
-Hasil: output/Serahan-HQ-CP-QC-Rev0/ – semua dokumen dalam PDF + satu PDF gabungan berbookmark;
+Hasil: output/Serahan-HQ-CP-QC-Rev0-P3-FINAL/ – semua dokumen dalam PDF + satu PDF gabungan berbookmark;
       fail Word & Excel asal dalam subfolder "Fail Asal (Word & Excel)"; dan fail .zip yang sama nama.
 Jana dokumen sumber dahulu (build_itp_xlsx, build_item_terbuka, build_pqp_docx, build_borang, build_carta_alir).
 """
@@ -18,9 +18,10 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 sys.path.insert(0, str(Path(__file__).parent))
 import build_pqp_docx  # noqa: E402
+import penamaan  # noqa: E402
 
 ROOT = Path.cwd()
-PKG = ROOT / "output" / "Serahan-HQ-CP-QC-Rev0"
+PKG = ROOT / "output" / penamaan.nama("Serahan-HQ-CP-QC-Rev0", "")
 MS_DIR = "06 Lampiran H - Method Statement"
 QF_DIR = "07 Lampiran I - Borang"
 ASAL_DIR = "Fail Asal (Word & Excel)"
@@ -137,13 +138,13 @@ def main():
 
     # Fail asal (boleh diedit) dalam subfolder; PDF di aras atas pakej
     build_pqp_docx.main(ROOT / "output/memo-hq.md", asal / "00 Memo Iringan kepada HQ.docx")
-    shutil.copy(ROOT / "output/Construction-Plan-QC.docx", asal / "01 Construction Plan (QC) Rev0.docx")
-    shutil.copy(ROOT / "output/ITP.xlsx", asal / "02 Lampiran A - ITP.xlsx")
+    shutil.copy(ROOT / penamaan.keluaran("Construction-Plan-QC", ".docx"), asal / "01 Construction Plan (QC) Rev0.docx")
+    shutil.copy(ROOT / penamaan.keluaran("ITP", ".xlsx"), asal / "02 Lampiran A - ITP.xlsx")
     n_dwg = daftar_lukisan(asal / "04 Lampiran C - Daftar Lukisan.xlsx")
-    shutil.copy(ROOT / "output/Lampiran-E-Jadual-Loji.xlsx", asal / "05 Lampiran E - Jadual Loji.xlsx")
-    shutil.copy(ROOT / "output/Daftar-Item-Terbuka.xlsx", asal / "08 Lampiran J - Daftar Item Terbuka.xlsx")
+    shutil.copy(ROOT / penamaan.keluaran("Lampiran-E-Jadual-Loji", ".xlsx"), asal / "05 Lampiran E - Jadual Loji.xlsx")
+    shutil.copy(ROOT / penamaan.keluaran("Daftar-Item-Terbuka", ".xlsx"), asal / "08 Lampiran J - Daftar Item Terbuka.xlsx")
     shutil.copy(ROOT / "docs/Carta_Organisasi_UTM_Pakej3_LATEST_6.pdf", PKG / "03 Lampiran B - Carta Organisasi.pdf")
-    shutil.copy(ROOT / "output/Lampiran-K-Carta-Alir.pdf", PKG / "09 Lampiran K - Carta Alir.pdf")
+    shutil.copy(ROOT / penamaan.keluaran("Lampiran-K-Carta-Alir", ".pdf"), PKG / "09 Lampiran K - Carta Alir.pdf")
     ms = sorted((ROOT / "output/method-statement").glob("MS-*.docx"))
     qf = sorted((ROOT / "output/borang").glob("KESB-QF-*.docx"))
     for f in ms:

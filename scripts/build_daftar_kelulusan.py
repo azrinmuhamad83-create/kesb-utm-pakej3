@@ -2,7 +2,7 @@
 
 Guna:  py -3.12 scripts/build_daftar_kelulusan.py          (cipta fail jika belum ada)
        py -3.12 scripts/build_daftar_kelulusan.py --paksa  (tulis ganti – SEMUA kemas kini Kerani hilang)
-Hasil: output/Daftar-Kelulusan-Bahan.xlsx
+Hasil: output/Daftar-Kelulusan-Bahan-P3-FINAL.xlsx
 
 Fail ini rekod hidup (CP-QC Seksyen 6.1; KESB-QF-21). Selepas dicipta, ia dikemas kini terus dalam Excel;
 skrip ini tidak menulis ganti fail sedia ada tanpa --paksa.
@@ -18,7 +18,11 @@ from openpyxl.formatting.rule import FormulaRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 
-OUT = Path("output/Daftar-Kelulusan-Bahan.xlsx")
+sys.path.insert(0, str(Path(__file__).parent))
+import penamaan  # noqa: E402
+
+OUT = penamaan.keluaran("Daftar-Kelulusan-Bahan", ".xlsx")
+penamaan.semak_nama_lama(OUT, "Daftar-Kelulusan-Bahan.xlsx")
 HEAD = PatternFill("solid", fgColor="1F4E78")
 TRADE = PatternFill("solid", fgColor="DDEBF7")
 THIN = Side(style="thin", color="999999")

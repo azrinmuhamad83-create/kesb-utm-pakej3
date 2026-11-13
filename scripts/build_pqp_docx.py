@@ -1,4 +1,4 @@
-"""Tukar output/CP-QC-draf.md jadi output/Construction-Plan-QC.docx (Word).
+"""Tukar output/CP-QC-draf.md jadi output/Construction-Plan-QC-P3-FINAL.docx (Word).
 
 Guna:  py -3.12 scripts/build_pqp_docx.py
        py -3.12 scripts/build_pqp_docx.py <fail.md> [<fail.docx>]   (fail lain, cth method statement)
@@ -14,8 +14,11 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Mm, Pt, RGBColor
 
+sys.path.insert(0, str(Path(__file__).parent))
+import penamaan  # noqa: E402
+
 SRC = Path("output/CP-QC-draf.md")
-OUT = Path("output/Construction-Plan-QC.docx")
+OUT = penamaan.keluaran("Construction-Plan-QC", ".docx")
 
 
 def add_inline(par, text):

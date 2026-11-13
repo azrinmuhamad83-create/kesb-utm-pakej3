@@ -43,7 +43,7 @@ Baris pertama: `# Project Quality Plan – <nama projek>`. Kemudian seksyen `##`
 5. Kawalan Dokumen & Rekod
 6. Pengurusan Submittal – material approval, shop drawing, method statement (senaraikan ikut trade)
 7. Kawalan Subkontraktor & Pembekal
-8. Inspection & Test Plan – ringkasan trade dan hold point utama; rujuk "Lampiran A: ITP.xlsx"
+8. Inspection & Test Plan – ringkasan trade dan hold point utama; rujuk "Lampiran A: ITP-P3-FINAL.xlsx"
 9. Kawalan Bahan & Ujian – rujuk sheet "Ujian Bahan"
 10. Kawalan Peralatan Ukur & Ujian – kalibrasi
 11. Non-Conformance & Tindakan Pembetulan – aliran, tempoh, kuasa penutupan; rujuk sheet "Daftar NCR"
@@ -68,7 +68,7 @@ py -3.12 scripts/build_pqp_docx.py
 ```
 
 ## Langkah 7: Lapor kepada user
-- Laluan `output/Construction-Plan-QC.docx` dan `output/ITP.xlsx`
+- Laluan `output/Construction-Plan-QC-P3-FINAL.docx` dan `output/ITP-P3-FINAL.xlsx`
 - Ringkasan: bilangan trade, aktiviti ITP, hold point
 - Senarai semua `[PERLU SAHKAN]` yang user perlu isi
 - Isu QA Minor yang belum dibetulkan
