@@ -59,3 +59,11 @@ py -3.12 -m pip install openpyxl python-docx pymupdf
 - `Guna agent drawing-reader untuk baca drawing`
 - `Guna agent qa-reviewer untuk semak PQP`
 - `py -3.12 scripts/build_pqp_docx.py` (jana semula Word selepas ubah draf)
+
+## Borang ITP sebagai aplikasi telefon (PWA)
+1. Workflow GitHub Actions menerbitkan folder `apps/borang-itp/` sebagai GitHub Pages apabila perubahan ke aplikasi digabungkan ke `main`. Setelah berjaya, buka **Settings → Pages** untuk pautan aplikasi.
+2. Pada Android, pilih **Pasang aplikasi / Add to Home screen** daripada menu pelayar. Pada iPhone/iPad, buka pautan dalam Safari, tekan **Share**, kemudian **Add to Home Screen**.
+3. Borang responsif untuk kegunaan tapak. Draf disimpan setempat dalam pelayar/peranti dan fail aplikasi boleh dicache untuk penggunaan luar talian selepas lawatan pertama.
+4. Gunakan **Muat turun JSON** untuk menyimpan salinan. Import fail terdahulu melalui **Import JSON**; formatnya kekal serasi dengan `output/itp.json` dan `scripts/build_itp_xlsx.py`.
+
+Penerbitan memerlukan GitHub Actions diaktifkan untuk repo. PWA ini tidak menghantar data borang ke pelayan. Letakkan JSON yang dimuat turun sebagai `output/itp.json` secara manual sebelum menjalankan penjana Excel.

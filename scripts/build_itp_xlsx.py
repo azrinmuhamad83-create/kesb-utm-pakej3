@@ -10,7 +10,9 @@ Format itp.json:
   "itp": [
     {"trade": "Konkrit", "aktiviti": [
       {"aktiviti": "Ujian slump", "kriteria": "75 +/- 25 mm", "rujukan": "Spec B.3.4",
-       "kekerapan": "Setiap lori", "rekod": "Borang QC-05", "titik": "W"}
+       "kekerapan": "Setiap lori", "rekod": "Borang QC-05", "titik": "W",
+       "kontraktor": "Wakil kontraktor", "so_perunding": "S.O.",
+       "pemeriksaan_bersama_so": true, "catatan": ""}
     ]}
   ],
   "ujian_bahan": [
@@ -69,8 +71,9 @@ def main():
 
     ws = sheet(wb, "ITP", project,
                ["No", "Aktiviti / Pemeriksaan", "Kriteria Penerimaan", "Rujukan Spec / Drawing",
-                "Kekerapan", "Rekod / Borang", "H/W/R", "Kontraktor", "SO / Perunding", "Catatan"],
-               [6, 40, 35, 22, 18, 20, 8, 14, 14, 20])
+                "Kekerapan", "Rekod / Borang", "H/W/R", "Kontraktor", "SO / Perunding",
+                "Pemeriksaan bersama S.O.", "Catatan"],
+               [6, 40, 35, 22, 18, 20, 8, 18, 18, 20, 25])
     for t_no, trade in enumerate(data.get("itp", []), start=1):
         ws.append([t_no, trade["trade"].upper()])
         style_row(ws, TRADE_FILL)
@@ -78,7 +81,11 @@ def main():
         for a_no, a in enumerate(trade.get("aktiviti", []), start=1):
             point = a.get("titik", "R").upper()
             ws.append([f"{t_no}.{a_no}", a.get("aktiviti", ""), a.get("kriteria", ""), a.get("rujukan", ""),
-                       a.get("kekerapan", ""), a.get("rekod", ""), point, "", "", ""])
+                       a.get("kekerapan", ""), a.get("rekod", ""), point, a.get("kontraktor", ""),
+                       a.get("so_perunding", ""),
+                       ("Ya" if a["pemeriksaan_bersama_so"] else "Tidak")
+                       if "pemeriksaan_bersama_so" in a else "",
+                       a.get("catatan", "")])
             style_row(ws, HOLD_FILL if point == "H" else None)
             ws.cell(ws.max_row, 7).alignment = Alignment(horizontal="center", vertical="top")
     ws.append([])
