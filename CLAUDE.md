@@ -81,6 +81,9 @@ Sumber: `docs/Carta_Organisasi_UTM_Pakej3_LATEST_6.pdf` (draf, 22/10/2026) dan `
 5. Standard Specification
 Percanggahan dirujuk kepada S.O. untuk keputusan.
 
+## Penamaan fail
+Fail hasil jana berakhir `-P3-FINAL` (lihat `scripts/penamaan.py`). Hanya folder UTM PAKEJ 3 FINAL yang rasmi; fail tanpa hujung itu ialah dari folder lama PQP UTM PE KESB. Borang KESB-QF, method statement dan surat tidak ditanda kerana nombor kawalan/rujukan sudah mengenal pasti dokumen.
+
 ## Bahasa
 Tulis dokumen dalam Bahasa Melayu.
 
@@ -101,7 +104,7 @@ Tulis dokumen dalam Bahasa Melayu.
   - Tempoh kontrak ikut SST: 104 minggu, siap 14/08/2028. Detailed Work Program (siap 16/08/2028) melepasi tarikh siap kontrak 2 hari – perlu dikemas kini
 - Carta organisasi: `docs/Carta_Organisasi_UTM_Pakej3_LATEST_6.pdf`
 - RFI log: not found (daftar isu: `.construction/skills/issues/`)
-- Submittal log: `output/Daftar-Kelulusan-Bahan.xlsx` – Senarai Induk Kelulusan Bahan (81 item), **rekod hidup dikemas kini oleh Kerani Tapak**; jangan jana semula dengan `scripts/build_daftar_kelulusan.py --paksa` (kemas kini akan hilang)
+- Submittal log: `output/Daftar-Kelulusan-Bahan-P3-FINAL.xlsx` – Senarai Induk Kelulusan Bahan (81 item), **rekod hidup dikemas kini oleh Kerani Tapak**; jangan jana semula dengan `scripts/build_daftar_kelulusan.py --paksa` (kemas kini akan hilang)
 
 ### Status
 - Operational mode: Flat File

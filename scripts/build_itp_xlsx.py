@@ -1,8 +1,8 @@
-"""Jana ITP.xlsx (ITP + daftar ujian bahan + daftar NCR + daftar dokumen) dari output/itp.json.
+"""Jana ITP-P3-FINAL.xlsx (ITP + daftar ujian bahan + daftar NCR + daftar dokumen) dari output/itp.json.
 
 Guna:  py -3.12 scripts/build_itp_xlsx.py
 Input: output/itp.json  (ditulis oleh skill quality-plan)
-Hasil: output/ITP.xlsx
+Hasil: output/ITP-P3-FINAL.xlsx
 
 Format itp.json:
 {
@@ -20,10 +20,14 @@ Format itp.json:
 }
 """
 import json
+import sys
 from pathlib import Path
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+
+sys.path.insert(0, str(Path(__file__).parent))
+import penamaan  # noqa: E402
 
 HEAD_FILL = PatternFill("solid", fgColor="1F4E78")
 TRADE_FILL = PatternFill("solid", fgColor="DDEBF7")
@@ -146,7 +150,7 @@ def main():
         ws.append([f"ISU-{i:03d}"] + [""] * 15)
         style_row(ws)
 
-    out = Path("output/ITP.xlsx")
+    out = penamaan.keluaran("ITP", ".xlsx")
     wb.save(out)
     n = sum(len(t.get("aktiviti", [])) for t in data.get("itp", []))
     print(f"Siap: {out}  ({len(data.get('itp', []))} trade, {n} aktiviti)")

@@ -1,7 +1,7 @@
 """Kumpul semua item [PERLU SAHKAN] daripada dokumen projek ke dalam Daftar Item Terbuka (Excel).
 
 Guna:  py -3.12 scripts/build_item_terbuka.py
-Hasil: output/Daftar-Item-Terbuka.xlsx  (Lampiran J CP-QC)
+Hasil: output/Daftar-Item-Terbuka-P3-FINAL.xlsx  (Lampiran J CP-QC)
 
 Sumber: output/CP-QC-draf.md, output/itp.json, output/method-statement/MS-*.md, scripts/build_borang.py.
 Item dengan teks sama digabung; semua lokasinya disenaraikan. Lampiran E diringkaskan kepada 3 item.
@@ -9,10 +9,14 @@ Jana semula selepas dokumen dikemas kini – item yang telah disahkan (tanda dib
 """
 import json
 import re
+import sys
 from pathlib import Path
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+
+sys.path.insert(0, str(Path(__file__).parent))
+import penamaan  # noqa: E402
 
 TAG = re.compile(r"\[PERLU SAHKAN:?\s*([^\]]*)\]")
 
@@ -233,7 +237,7 @@ for item, kesan, tindakan in [
 hq.append([])
 hq.append(["", "Senarai penuh setiap item, lokasinya dalam dokumen dan pemilik: sheet \"Item Terbuka\"."])
 
-out = Path("output/Daftar-Item-Terbuka.xlsx")
+out = penamaan.keluaran("Daftar-Item-Terbuka", ".xlsx")
 wb.save(out)
 print(f"Siap: {out}  ({n} item)")
 for k, c in Counter(r[0] for r in rows).items():

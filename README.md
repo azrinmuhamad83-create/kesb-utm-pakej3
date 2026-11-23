@@ -1,61 +1,55 @@
-# PQP-Projek – Cara Guna
+# UTM Pakej 3 – Cara Guna
 
-Input: **drawing (PDF)** + **BQ (Excel/PDF)**. Output: **PQP.docx (Word)** + **ITP.xlsx (Excel)**.
+Folder rasmi: **UTM PAKEJ 3 FINAL**. Folder lama PQP UTM PE KESB tidak lagi digunakan untuk dokumen baharu.
 
-## Aliran
-```
- docs/drawings/*.pdf          docs/BQ.xlsx
-        |                          |
- [agent drawing-reader]     [agent bq-analyst]
-        |                          |
-        +-------------+------------+
-                      |
-          [skill /quality-plan]  -> PQP-draf.md + itp.json
-                      |
-             [agent qa-reviewer]  -> senarai isu, betulkan
-                      |
-              [code Python]
-           /                 \
-   output/PQP.docx      output/ITP.xlsx
-```
+Input: lukisan (PDF) dan BQ. Output: Construction Plan (QC) dalam Word, ITP dan daftar-daftar dalam Excel, borang, method statement dan pakej serahan HQ.
+
+## Penamaan fail
+Fail hasil jana berakhir `-P3-FINAL`, contohnya `ITP-P3-FINAL.xlsx`. Semua nama ditetapkan dalam `scripts/penamaan.py`; jika mahu tukar tanda itu, ubah di situ sahaja.
+
+| Hasil jana | Nama |
+|---|---|
+| ITP | `output/ITP-P3-FINAL.xlsx` |
+| Construction Plan (QC) | `output/Construction-Plan-QC-P3-FINAL.docx` |
+| Daftar Kelulusan Bahan | `output/Daftar-Kelulusan-Bahan-P3-FINAL.xlsx` |
+| Daftar Item Terbuka | `output/Daftar-Item-Terbuka-P3-FINAL.xlsx` |
+| Lampiran E – Jadual Loji | `output/Lampiran-E-Jadual-Loji-P3-FINAL.xlsx` |
+| Lampiran K – Carta Alir | `output/Lampiran-K-Carta-Alir-P3-FINAL.pdf` |
+| Pakej serahan HQ | `output/Serahan-HQ-CP-QC-Rev0-P3-FINAL/` (dan `.zip`) |
+
+Tidak ditanda: borang `KESB-QF-xx`, method statement `MS-xx` dan surat, kerana nombor kawalan atau rujukan surat sudah cukup. Fail di dalam pakej HQ sudah bernombor dan ada Rev.
+
+Daftar Kelulusan Bahan ialah rekod hidup yang dikemas kini Kerani Tapak. Jika folder ini masih ada fail bernama lama `Daftar-Kelulusan-Bahan.xlsx`, namakan semula dahulu kepada nama baharu. Skrip akan berhenti dan memberitahu jika nama lama dijumpai, supaya tiada fail kosong dijana di sebelahnya.
 
 ## Struktur
 ```
-PQP-Projek/
-├── CLAUDE.md                        <- maklumat projek (isi dulu)
-├── docs/
-│   ├── BQ.xlsx                      <- BQ kontrak (termasuk Preliminaries)
-│   ├── drawings/                    <- letak semua drawing PDF di sini
-│   └── kontrak/                     <- (jika ada) Syarat Kontrak, Spesifikasi
-├── output/                          <- semua hasil keluar di sini
-├── scripts/                         <- CODE
-│   ├── bq_extract.py                   BQ -> kumpul item ikut trade
-│   ├── drawing_extract.py              drawing PDF -> imej + teks
-│   ├── build_itp_xlsx.py               itp.json -> ITP.xlsx
-│   └── build_pqp_docx.py               PQP-draf.md -> PQP.docx
+UTM PAKEJ 3 FINAL/
+├── CLAUDE.md                 maklumat projek
+├── docs/                     kontrak, BQ, lukisan, SST (tidak dikongsi ke repo)
+├── output/                   semua hasil jana (tidak dikongsi ke repo)
+├── scripts/                  kod
+│   ├── penamaan.py              nama fail hasil jana
+│   ├── bq_extract.py            BQ -> kumpul item ikut trade
+│   ├── drawing_extract.py       lukisan PDF -> imej + teks
+│   ├── build_itp_xlsx.py        itp.json -> ITP
+│   ├── build_pqp_docx.py        CP-QC-draf.md -> Construction Plan (Word)
+│   ├── build_borang.py          borang KESB-QF
+│   ├── build_daftar_kelulusan.py, build_item_terbuka.py, build_lampiran_e.py, build_carta_alir.py
+│   ├── build_surat_rfi.py, build_surat_whatsapp.py
+│   └── build_pakej_hq.py        himpun pakej serahan HQ
 └── .claude/
-    ├── skills/quality-plan/SKILL.md <- SKILL: ketua aliran
-    └── agents/
-        ├── bq-analyst.md            <- AGENT: baca BQ
-        ├── drawing-reader.md        <- AGENT: baca drawing
-        └── qa-reviewer.md           <- AGENT: semak QA (baca sahaja)
+    ├── skills/                  quality-plan, ms-project
+    └── agents/                  bq-analyst, drawing-reader, qa-reviewer
 ```
 
 ## Persediaan (sekali sahaja)
 ```
-py -3.12 -m pip install openpyxl python-docx pymupdf
+py -3.12 -m pip install openpyxl python-docx pymupdf pyyaml pywin32
 ```
 
 ## Langkah guna
-1. Buka folder `PQP-Projek` dalam VS Code (File -> Open Folder).
-2. Isi `CLAUDE.md`.
-3. Letak BQ dalam `docs/`, dan drawing dalam `docs/drawings/`.
-4. Buka panel Claude Code dan taip: `/quality-plan`
-5. Claude akan jalankan semua langkah dan beri `output/PQP.docx` dan `output/ITP.xlsx`.
-6. Buka Word dan isi semua teks merah `[PERLU SAHKAN]`.
-
-## Boleh jalankan langkah satu per satu
-- `Guna agent bq-analyst untuk baca BQ`
-- `Guna agent drawing-reader untuk baca drawing`
-- `Guna agent qa-reviewer untuk semak PQP`
-- `py -3.12 scripts/build_pqp_docx.py` (jana semula Word selepas ubah draf)
+1. Buka folder UTM PAKEJ 3 FINAL dalam VS Code.
+2. Pastikan `CLAUDE.md` terkini.
+3. Jalankan `/quality-plan` dalam panel Claude Code, atau skrip satu per satu, contohnya `py -3.12 scripts/build_itp_xlsx.py`.
+4. Buka hasil dalam `output/` dan isi semua teks `[PERLU SAHKAN]`.
+5. Untuk pakej HQ, jana dokumen sumber dahulu, kemudian `py -3.12 scripts/build_pakej_hq.py` (perlu Word dan Excel dipasang).
