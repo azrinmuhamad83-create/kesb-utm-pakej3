@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistem Reka Bentuk Dokumen – SOM & PQP | KESB UTM Pakej 3</title>
+<style>
+/* ===== Token (diambil daripada scripts/build_*.py) ===== */
+:root{
+  --navy:#1F4E78;        /* HEAD_FILL ITP/daftar; NAVY carta alir */
+  --navy-900:#163A5A;
+  --biru-pucat:#DDEBF7;  /* pengepala jadual Word; baris trade Excel */
+  --biru-sederhana:#BDD7EE; /* jalur BAHAGIAN borang; jalur kategori daftar */
+  --kelabu-label:#F2F2F2;/* sel label maklumat projek */
+  --garis:#999999;       /* sempadan nipis Excel */
+  --teks:#000000;
+  --teks-lembut:#595959; /* GREY carta alir */
+  --merah:#C00000;       /* [PERLU SAHKAN] */
+  --hold:#F8CBAD;        /* titik HOLD / Ditolak */
+  --lulus:#E2EFDA;       /* Diluluskan */
+  --kemuka:#FFF2CC;      /* Dikemukakan / menunggu */
+  --keputusan:#FFF2BF;   /* rombus keputusan carta alir */
+  --sisi:#FCE3D6;        /* cabang sisi carta alir */
+  --gelung:#BF3326;      /* anak panah gelung "Tidak" */
+  --font:Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--teks);background:#EEF2F6;font-size:15px;line-height:1.55}
+a{color:var(--navy)}
+.top{background:var(--navy);color:#fff;padding:28px 40px 22px}
+.top h1{margin:0;font-size:26px}
+.top p{margin:6px 0 0;opacity:.85;font-size:13.5px}
+.layout{display:grid;grid-template-columns:230px 1fr;max-width:1280px;margin:0 auto}
+nav{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:24px 18px;border-right:1px solid #d6dde5;background:#F7F9FB}
+nav a{display:block;text-decoration:none;color:#333;font-size:13px;padding:5px 8px;border-radius:4px}
+nav a:hover{background:var(--biru-pucat);color:var(--navy)}
+nav .grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--teks-lembut);margin:14px 8px 4px}
+main{padding:28px 40px 80px;min-width:0}
+section{background:#fff;border:1px solid #d6dde5;border-radius:6px;padding:26px 30px;margin-bottom:22px;overflow-x:auto}
+section>h2{margin:0 0 4px;font-size:20px;color:var(--navy);display:flex;gap:10px;align-items:baseline}
+section>h2 .no{font-size:13px;color:#fff;background:var(--navy);border-radius:3px;padding:1px 7px}
+.lead{color:var(--teks-lembut);margin:0 0 18px;font-size:13.5px}
+h3{font-size:15px;margin:22px 0 8px;color:var(--navy-900)}
+code{font-family:Consolas,"Courier New",monospace;font-size:12.5px;background:#F2F4F7;padding:1px 5px;border-radius:3px}
+.src{font-size:11.5px;color:var(--teks-lembut)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}nav{display:none}.g3,.g4{grid-template-columns:repeat(2,1fr)}main{padding:16px}.top{padding:20px 16px}}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr}section{padding:18px 16px}}
+
+.sw{border:1px solid #d6dde5;border-radius:5px;overflow:hidden;font-size:12.5px}
+.sw .c{height:62px;border-bottom:1px solid #d6dde5}
+.sw .t{padding:8px 10px}
+.sw b{display:block;font-size:13px}
+
+table.doc{border-collapse:collapse;width:100%;font-size:12.5px;margin:6px 0 12px}
+table.doc th,table.doc td{border:1px solid #000;padding:4px 7px;vertical-align:top;text-align:left}
+table.doc th{background:var(--biru-pucat);font-weight:bold}
+table.doc td.lbl{background:var(--kelabu-label);font-weight:bold;width:34%}
+table.xl th{background:var(--navy);color:#fff;border-color:var(--garis)}
+table.xl td{border-color:var(--garis)}
+table.xl tr.trade td{background:var(--biru-pucat);font-weight:bold}
+table.legal td{font-size:12px}
+table.legal tr.kat td{background:var(--biru-sederhana);font-weight:bold}
+.band{background:var(--biru-sederhana);border:1px solid #000;font-weight:bold;padding:4px 7px;font-size:12.5px;margin:8px 0}
+.psah{color:var(--merah);font-weight:bold}
+
+.page{background:#fff;border:1px solid #c4ccd6;box-shadow:0 2px 6px rgba(0,0,0,.08);aspect-ratio:210/297;width:100%;position:relative;font-size:9px;padding:9% 8.5% 8%;overflow:hidden}
+.page .hdr{position:absolute;top:3%;left:8.5%;right:8.5%;display:flex;justify-content:space-between;border-bottom:.8px solid var(--navy);padding-bottom:2px;color:var(--teks-lembut);font-size:7.5px}
+.page .ftr{position:absolute;bottom:3%;left:8.5%;right:8.5%;display:flex;justify-content:space-between;border-top:.8px solid var(--garis);padding-top:2px;color:var(--teks-lembut);font-size:7.5px}
+.cover{display:flex;flex-direction:column;height:100%}
+.cover .co{font-weight:bold;font-size:11px;text-align:center;letter-spacing:.04em}
+.cover .bar{background:var(--navy);color:#fff;text-align:center;padding:10px 6px;margin:14% 0 6%}
+.cover .bar .k{font-size:8px;letter-spacing:.12em;opacity:.85}
+.cover .bar .t{font-size:15px;font-weight:bold;margin-top:3px}
+.cover .proj{text-align:center;font-size:9px;line-height:1.5}
+.cover table{font-size:7.5px;margin-top:auto}
+.cover table td{padding:2px 4px}
+.stamp{display:inline-block;border:2.5px solid var(--merah);color:var(--merah);font-weight:bold;letter-spacing:.08em;padding:4px 12px;transform:rotate(-6deg);font-size:15px}
+.stamp.b{border-color:var(--navy);color:var(--navy)}
+
+.chip{display:inline-block;font-size:11.5px;font-weight:bold;padding:2px 9px;border-radius:3px;border:1px solid rgba(0,0,0,.25)}
+.c-h{background:var(--hold)}.c-w{background:var(--kemuka)}.c-r{background:var(--lulus)}
+.c-lulus{background:var(--lulus)}.c-kemuka{background:var(--kemuka)}.c-tolak{background:var(--hold)}.c-batal{background:#D9D9D9;text-decoration:line-through}
+
+.fc{display:grid;grid-template-columns:150px 1fr 170px;gap:8px 14px;font-size:12px;align-items:center}
+.fc .role{color:var(--teks-lembut);text-align:right;font-size:11.5px}
+.fc .rec{font-size:11px;color:var(--navy);font-family:Consolas,monospace}
+.sh{border:1.4px solid var(--navy);padding:7px 10px;text-align:center;background:var(--biru-pucat)}
+.sh.s,.sh.e{border-radius:20px;background:var(--navy);color:#fff;font-weight:bold}
+.sh.d{background:var(--keputusan);clip-path:polygon(6% 0,94% 0,100% 50%,94% 100%,6% 100%,0 50%);border:none;outline:1.4px solid var(--navy);outline-offset:-1px}
+.sh.side{background:var(--sisi)}
+.arrow{text-align:center;color:var(--navy);font-size:14px;line-height:1}
+.loop{color:var(--gelung);font-weight:bold;font-size:11px}
+
+.callout{border-left:4px solid var(--navy);background:#F4F8FC;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.callout.r{border-color:var(--merah);background:#FDF3F3}
+.do,.dont{padding:10px 14px;border-radius:4px;font-size:13px}
+.do{background:#EEF6EA;border:1px solid #B9D7A8}.dont{background:#FBEDEC;border:1px solid #E8B4AE}
+.do b,.dont b{display:block;margin-bottom:4px}
+.typo div{border-bottom:1px dashed #d6dde5;padding:8px 0;display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+.typo .m{width:220px;flex:none;font-size:11.5px;color:var(--teks-lembut);font-family:Consolas,monospace}
+.tree{font-family:Consolas,monospace;font-size:12.5px;background:#F7F9FB;border:1px solid #d6dde5;padding:12px 16px;white-space:pre;overflow:auto;line-height:1.5}
+.sign{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #000;font-size:11.5px}
+.sign>div{border-right:1px solid #000}.sign>div:last-child{border:0}
+.sign .h{background:var(--biru-pucat);font-weight:bold;padding:4px 6px;border-bottom:1px solid #000}
+.sign .b{padding:4px 6px;height:84px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;color:var(--teks-lembut)}
+footer{font-size:12px;color:var(--teks-lembut);text-align:center;padding:10px}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Sistem Reka Bentuk Dokumen: Standard Operation Manual (SOM) &amp; Project Quality Plan (PQP)</h1>
+  <p>Karim Engineering Sdn Bhd (KESB) · UTM – Baikpulih Makmal P&amp;P di Bangunan Akademik (RP1-RMKe-13), Pakej 3: FKOM &amp; FKM · No. kontrak TN/2026-21/D-1/SP/BPA</p>
+  <p>Versi 1.0 · 03/11/2026 · Diekstrak daripada skrip penjana dokumen projek (scripts/build_*.py) dan CP-QC Rev 5</p>
+</div>
+
+<div class="layout">
+<nav>
+  <div class="grp">Asas</div>
+  <a href="#prinsip">1. Prinsip</a>
+  <a href="#warna">2. Warna</a>
+  <a href="#tipografi">3. Tipografi</a>
+  <a href="#halaman">4. Halaman &amp; grid</a>
+  <div class="grp">Kawalan dokumen</div>
+  <a href="#nombor">5. Penomboran</a>
+  <a href="#kulit">6. Kulit &amp; blok kawalan</a>
+  <a href="#cop">7. Cop &amp; status</a>
+  <div class="grp">Komponen</div>
+  <a href="#jadual">8. Jadual</a>
+  <a href="#carta">9. Carta alir</a>
+  <a href="#borang">10. Borang &amp; tandatangan</a>
+  <a href="#nota">11. Nota &amp; penanda</a>
+  <div class="grp">Pematuhan &amp; templat</div>
+  <a href="#perundangan">12. Pematuhan perundangan</a>
+  <a href="#saluran">13. Saluran komunikasi</a>
+  <a href="#pqp">14. Struktur PQP</a>
+  <a href="#som">15. Struktur SOM &amp; SOP</a>
+  <a href="#bahasa">16. Bahasa &amp; penulisan</a>
+  <a href="#fail">17. Fail &amp; penjanaan</a>
+</nav>
+
+<main>
+
+<section id="prinsip">
+  <h2><span class="no">1</span>Prinsip</h2>
+  <p class="lead">Dokumen KESB untuk projek ini ialah rekod kontrak. Reka bentuknya mengutamakan kejelasan, kebolehkesanan dan cetakan hitam-putih.</p>
+  <div class="grid g2">
+    <div class="callout"><b>Kontrak dahulu.</b> Setiap prosedur merujuk klausa (cth <i>BQ A Prelim 3.0 (ii)</i>). Amalan tambahan ditanda “cadangan KESB”.</div>
+    <div class="callout"><b>Satu warna utama.</b> Biru tentera laut KESB untuk struktur; warna lain hanya membawa makna status.</div>
+    <div class="callout"><b>Boleh dicetak &amp; difotokopi.</b> A4, Arial, garis hitam nipis. Makna tidak bergantung pada warna sahaja – sentiasa ada teks.</div>
+    <div class="callout r"><b>Yang belum sah ditunjuk jelas.</b> Maklumat yang belum ada dalam dokumen kontrak ditanda <span class="psah">[PERLU SAHKAN]</span> dalam merah tebal – jangan diteka.</div>
+  </div>
+</section>
+
+<section id="warna">
+  <h2><span class="no">2</span>Warna</h2>
+  <p class="lead">Palet sedia ada dalam skrip Word, Excel dan carta alir. Kod heks dipakai terus dalam python-docx (<code>w:fill</code>) dan openpyxl (<code>PatternFill</code>).</p>
+  <h3>Struktur</h3>
+  <div class="grid g4">
+    <div class="sw"><div class="c" style="background:#1F4E78"></div><div class="t"><b>Navy KESB</b><code>1F4E78</code><br>Pengepala jadual Excel, jalur kulit, carta alir, Tajuk 1</div></div>
+    <div class="sw"><div class="c" style="background:#DDEBF7"></div><div class="t"><b>Biru pucat</b><code>DDEBF7</code><br>Pengepala jadual Word, baris trade, kotak proses</div></div>
+    <div class="sw"><div class="c" style="background:#BDD7EE"></div><div class="t"><b>Biru sederhana</b><code>BDD7EE</code><br>Jalur “BAHAGIAN A/B”; jalur kategori daftar</div></div>
+    <div class="sw"><div class="c" style="background:#F2F2F2"></div><div class="t"><b>Kelabu label</b><code>F2F2F2</code><br>Sel label maklumat projek</div></div>
+    <div class="sw"><div class="c" style="background:#000"></div><div class="t"><b>Hitam</b><code>000000</code><br>Teks badan, garis jadual Word</div></div>
+    <div class="sw"><div class="c" style="background:#595959"></div><div class="t"><b>Kelabu teks</b><code>595959</code><br>Pengepala/pengaki, keterangan, peranan</div></div>
+    <div class="sw"><div class="c" style="background:#999999"></div><div class="t"><b>Garis Excel</b><code>999999</code><br>Sempadan nipis lembaran kerja</div></div>
+    <div class="sw"><div class="c" style="background:#C00000"></div><div class="t"><b>Merah sahkan</b><code>C00000</code><br>[PERLU SAHKAN], cop BATAL / SALINAN TERKAWAL</div></div>
+  </div>
+  <h3>Status (isi sel / chip)</h3>
+  <div class="grid g4">
+    <div class="sw"><div class="c" style="background:#E2EFDA"></div><div class="t"><b>Lulus / Selesai</b><code>E2EFDA</code><br>Daftar: Diluluskan; ITP titik R</div></div>
+    <div class="sw"><div class="c" style="background:#FFF2CC"></div><div class="t"><b>Dikemukakan / Menunggu</b><code>FFF2CC</code><br>Daftar: Dikemukakan; ITP titik W</div></div>
+    <div class="sw"><div class="c" style="background:#F8CBAD"></div><div class="t"><b>Hold / Ditolak / Lewat</b><code>F8CBAD</code><br>ITP titik H; status Ditolak</div></div>
+    <div class="sw"><div class="c" style="background:#FFF2BF"></div><div class="t"><b>Keputusan</b><code>FFF2BF</code><br>Rombus carta alir</div></div>
+  </div>
+  <p class="src">Sumber: build_itp_xlsx.py (HEAD_FILL, TRADE_FILL, HOLD_FILL), build_daftar_kelulusan.py (format bersyarat), build_borang.py (shade), build_carta_alir.py (NAVY, LIGHT, YELLOW, SIDE), build_pqp_docx.py (merah PERLU SAHKAN).</p>
+</section>
+
+<section id="tipografi">
+  <h2><span class="no">3</span>Tipografi</h2>
+  <p class="lead">Satu keluarga sahaja: <b>Arial</b> (tersedia di semua komputer pejabat &amp; tapak). Saiz dalam pt untuk Word.</p>
+  <div class="typo">
+    <div><span class="m">Tajuk dokumen · 16 pt tebal · navy</span><span style="font-size:21px;font-weight:bold;color:var(--navy)">Project Quality Plan (PQP)</span></div>
+    <div><span class="m">Tajuk 1 · 13 pt tebal · navy, HURUF BESAR</span><span style="font-size:17px;font-weight:bold;color:var(--navy)">5. KAWALAN DOKUMEN &amp; REKOD</span></div>
+    <div><span class="m">Tajuk 2 · 11 pt tebal · hitam</span><span style="font-size:15px;font-weight:bold">5.3 Saluran teknikal dengan S.O.</span></div>
+    <div><span class="m">Tajuk 3 · 10.5 pt tebal condong</span><span style="font-size:14px;font-weight:bold;font-style:italic">a) Surat rasmi</span></div>
+    <div><span class="m">Badan PQP/SOM · 10.5 pt · jarak 1.15</span><span style="font-size:14px">Setiap prosedur merujuk klausa kontrak yang berkaitan.</span></div>
+    <div><span class="m">Borang · 9.5 pt · jarak 0</span><span style="font-size:12.5px">Tandatangan: ………… Nama: ………… Tarikh: …………</span></div>
+    <div><span class="m">Jadual · 9.5 pt; pengepala tebal</span><span style="font-size:12.5px"><b>Rev</b> · <b>Tarikh</b> · <b>Perubahan</b></span></div>
+    <div><span class="m">Pengepala/pengaki · 8 pt · kelabu</span><span style="font-size:11px;color:var(--teks-lembut)">KESB/UTM-P3/CP-QC/001 · Rev 5 · Muka surat 3 daripada 42</span></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="do"><b>Buat</b>Tebalkan istilah kunci sekali sahaja dalam perenggan (<b>Borang RFA UTM</b>). Nombor seksyen dalam tajuk.</div>
+    <div class="dont"><b>Jangan</b>Garis bawah untuk penegasan; huruf besar penuh dalam badan teks; lebih daripada satu fon.</div>
+  </div>
+</section>
+
+<section id="halaman">
+  <h2><span class="no">4</span>Halaman &amp; grid</h2>
+  <p class="lead">A4 menegak untuk PQP, SOM, SOP, method statement dan borang. A4 melintang untuk ITP, carta alir dan daftar.</p>
+  <table class="doc" style="max-width:820px">
+    <tr><th>Jenis</th><th>Saiz</th><th>Margin (A × B × K × Ka)</th><th>Lebar teks</th><th>Fon badan</th></tr>
+    <tr><td>PQP / SOM / SOP / MS</td><td>A4 menegak</td><td>25 × 20 × 25 × 25 mm</td><td>159 mm</td><td>10.5 pt</td></tr>
+    <tr><td>Borang KESB-QF</td><td>A4 menegak</td><td>12 × 12 × 18 × 18 mm</td><td>174 mm</td><td>9.5 pt</td></tr>
+    <tr><td>ITP / daftar / carta alir</td><td>A4 melintang</td><td>15 mm semua</td><td>267 mm</td><td>9 pt</td></tr>
+  </table>
+  <div class="grid g3" style="margin-top:12px">
+    <div class="page"><div class="hdr"><span>KARIM ENGINEERING SDN BHD</span><span>KESB/UTM-P3/CP-QC/001 · Rev 5</span></div>
+      <div style="font-weight:bold;color:var(--navy);font-size:10px">5. KAWALAN DOKUMEN &amp; REKOD</div>
+      <div style="font-weight:bold;margin-top:4px">5.1 Proses kawalan dokumen</div>
+      <div style="margin-top:3px;color:#444">Dokumen terkawal dikenal pasti dengan no. dokumen, revisi dan tarikh…</div>
+      <table class="doc" style="font-size:7px;margin-top:6px"><tr><th>Langkah</th><th>Tindakan</th><th>Rekod</th></tr><tr><td>1</td><td>Sediakan draf</td><td>—</td></tr><tr><td>2</td><td>Semak HQ</td><td>KESB-QF-15</td></tr></table>
+      <div class="ftr"><span>Salinan cetak tanpa cop SALINAN TERKAWAL = tidak terkawal</span><span>Muka surat 12 daripada 42</span></div></div>
+    <div style="font-size:13px">
+      <h3 style="margin-top:0">Pengepala (setiap muka surat kecuali kulit)</h3>
+      Kiri: <b>KARIM ENGINEERING SDN BHD</b><br>Kanan: <code>No. dokumen · Rev n</code><br>Garis bawah navy 0.75 pt.
+      <h3>Pengaki</h3>
+      Kiri: nota salinan terkawal (8 pt kelabu)<br>Kanan: <code>Muka surat X daripada Y</code><br>
+      <h3>Borang</h3>
+      Pengepala kanan sahaja: <code>KESB-QF-xx | Rev n | KESB/UTM-P3/CP-QC/001</code> (ikut build_borang.py).
+    </div>
+    <div style="font-size:13px">
+      <h3 style="margin-top:0">Jarak</h3>
+      Selepas perenggan 6 pt · sebelum Tajuk 1: 18 pt + muka surat baharu · sebelum Tajuk 2: 12 pt · selepas jadual: satu perenggan kosong 6 pt.
+      <h3>Lebar lajur</h3>
+      Jumlah lajur = lebar teks (159 mm). Lajur huraian paling lebar; lajur nombor/“Rev” 10–14 mm. Tetapkan dengan <code>&lt;!-- lebar: 10, 22, 90, 37 --&gt;</code> dalam fail .md.
+    </div>
+  </div>
+</section>
+
+<section id="nombor">
+  <h2><span class="no">5</span>Penomboran dokumen</h2>
+  <p class="lead">Format sedia ada <code>KESB/UTM-P3/&lt;JENIS&gt;/&lt;no&gt;</code> dikekalkan. SOM dan SOP ialah siri baharu (cadangan KESB).</p>
+  <table class="doc">
+    <tr><th style="width:24%">Dokumen</th><th style="width:30%">No. dokumen</th><th>Catatan</th></tr>
+    <tr><td><b>Project Quality Plan</b></td><td><code>KESB/UTM-P3/CP-QC/001</code></td><td>Nama kontrak: <i>Construction Plan (Quality Control)</i> di bawah Prelim 3.0. PQP = CP-QC; nombor sedia ada dikekalkan (kini Rev 5).</td></tr>
+    <tr><td><b>Standard Operation Manual</b></td><td><code>KESB/UTM-P3/SOM/001</code></td><td>Baharu – manual induk yang menghimpun SOP harian tapak (cadangan KESB).</td></tr>
+    <tr><td>Prosedur operasi standard</td><td><code>KESB/UTM-P3/SOP-01</code> … <code>SOP-15</code></td><td>Satu prosedur satu nombor; dirujuk dalam SOM Seksyen 4.</td></tr>
+    <tr><td>Method statement</td><td><code>KESB/UTM-P3/MS-01</code> … <code>MS-14</code></td><td>Sedia ada; Prelim 3.0 (ii).</td></tr>
+    <tr><td>Borang</td><td><code>KESB-QF-01</code> … <code>KESB-QF-29</code></td><td>Sedia ada; senarai dalam CP-QC Seksyen 15.3.</td></tr>
+    <tr><td>Rekod berturutan</td><td><code>NCR-001</code>, <code>RFA-01</code>, <code>ISU-001</code></td><td>Daftar masing-masing.</td></tr>
+  </table>
+  <p style="font-size:13px"><b>Revisi:</b> integer bermula <code>Rev 0</code> (draf pertama untuk semakan HQ). Setiap revisi direkod dalam Sejarah Revisi dengan seksyen yang dipinda. Versi lama diarkib dan dicop <b>BATAL</b>.</p>
+</section>
+
+<section id="kulit">
+  <h2><span class="no">6</span>Kulit &amp; blok kawalan dokumen</h2>
+  <p class="lead">Setiap PQP, SOM dan SOP bermula dengan kulit, diikuti Sejarah Revisi dan Senarai Edaran. Rantaian kelulusan ikut CP-QC.</p>
+  <div class="grid g3">
+    <div class="page"><div class="cover">
+      <div class="co">KARIM ENGINEERING SDN BHD</div>
+      <div class="bar"><div class="k">PROJECT QUALITY PLAN</div><div class="t">Construction Plan (Quality Control)</div></div>
+      <div class="proj">UTM – Baikpulih Makmal P&amp;P di Bangunan Akademik (RP1-RMKe-13)<br><b>Pakej 3: FKOM &amp; FKM</b><br>No. kontrak TN/2026-21/D-1/SP/BPA</div>
+      <table class="doc"><tr><td class="lbl">No. dokumen</td><td>KESB/UTM-P3/CP-QC/001</td></tr><tr><td class="lbl">Revisi / tarikh</td><td>5 / 29/10/2026</td></tr><tr><td class="lbl">Disediakan</td><td>Pengurus Projek</td></tr><tr><td class="lbl">Disemak</td><td>Penyelaras Projek</td></tr><tr><td class="lbl">Diluluskan</td><td>Pengarah Projek</td></tr><tr><td class="lbl">Diterima</td><td class="psah">S.O. UTM</td></tr></table>
+      <div style="text-align:right;margin-top:6px"><span class="stamp" style="font-size:8px;padding:2px 6px">SALINAN TERKAWAL No. __</span></div>
+    </div></div>
+    <div class="page"><div class="cover">
+      <div class="co">KARIM ENGINEERING SDN BHD</div>
+      <div class="bar"><div class="k">STANDARD OPERATION MANUAL</div><div class="t">Manual Operasi Tapak</div></div>
+      <div class="proj">UTM – Baikpulih Makmal P&amp;P di Bangunan Akademik (RP1-RMKe-13)<br><b>Pakej 3: FKOM &amp; FKM</b><br>No. kontrak TN/2026-21/D-1/SP/BPA</div>
+      <table class="doc"><tr><td class="lbl">No. dokumen</td><td>KESB/UTM-P3/SOM/001</td></tr><tr><td class="lbl">Revisi / tarikh</td><td>0 / __/__/2026</td></tr><tr><td class="lbl">Disediakan</td><td>Pengurus Projek</td></tr><tr><td class="lbl">Disemak</td><td>Penyelaras Projek</td></tr><tr><td class="lbl">Diluluskan</td><td>Pengarah Projek</td></tr><tr><td class="lbl">Rujukan</td><td>CP-QC/001</td></tr></table>
+    </div></div>
+    <div style="font-size:13px">
+      <h3 style="margin-top:0">Peraturan kulit</h3>
+      <ul style="padding-left:18px;margin:0">
+        <li>Nama syarikat 12 pt tebal di tengah.</li>
+        <li>Jalur navy: jenis dokumen (8 pt, jarak huruf lebar) + tajuk (16 pt tebal putih).</li>
+        <li>Blok projek: nama penuh projek, pakej, no. kontrak.</li>
+        <li>Blok kawalan di bawah: jadual label kelabu <code>F2F2F2</code>.</li>
+        <li>Tiada logo UTM tanpa kebenaran S.O. <span class="psah">[PERLU SAHKAN]</span></li>
+        <li>Nilai kontrak, harga BQ dan isi SST <b>tidak</b> dicetak pada SOM/SOP (diedar kepada subkon).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Blok kawalan (muka surat 2)</h3>
+  <table class="doc">
+    <tr><td class="lbl">No. dokumen</td><td>KESB/UTM-P3/CP-QC/001</td></tr>
+    <tr><td class="lbl">Revisi</td><td>5 (ringkasan perubahan satu baris)</td></tr>
+    <tr><td class="lbl">Tarikh</td><td>29/10/2026</td></tr>
+    <tr><td class="lbl">Disediakan oleh</td><td>Muhamad Azrin bin Rahmat, Pengurus Projek cum Site Agent</td></tr>
+    <tr><td class="lbl">Disemak oleh</td><td>Muhammad Syahidzul Ikhwan, Penyelaras Projek (Ibu Pejabat KESB)</td></tr>
+    <tr><td class="lbl">Diluluskan oleh</td><td>Zaillan Md Ismail, Pengarah Projek KESB</td></tr>
+    <tr><td class="lbl">Diterima oleh</td><td><span class="psah">[PERLU SAHKAN: Pegawai Penguasa (S.O.), UTM]</span></td></tr>
+  </table>
+  <div class="grid g2">
+    <div>
+      <h3>Sejarah revisi</h3>
+      <table class="doc"><tr><th style="width:9%">Rev</th><th style="width:17%">Tarikh</th><th>Perubahan (seksyen dipinda)</th><th style="width:20%">Disediakan</th><th style="width:20%">Diluluskan</th></tr>
+      <tr><td>0</td><td>26/10/2026</td><td>Draf pertama untuk semakan HQ KESB</td><td>M. Azrin</td><td>Zaillan Md Ismail</td></tr>
+      <tr><td>1</td><td>29/10/2026</td><td>Seksyen 5.3 baharu; 2.2, 2.3 dipinda</td><td>M. Azrin</td><td class="psah">[PERLU SAHKAN]</td></tr></table>
+    </div>
+    <div>
+      <h3>Senarai edaran salinan terkawal</h3>
+      <table class="doc"><tr><th style="width:22%">No. salinan</th><th>Pemegang</th></tr>
+      <tr><td>1</td><td>Pegawai Penguasa (S.O.), UTM</td></tr><tr><td>2</td><td>Pengarah Projek KESB (Ibu Pejabat)</td></tr><tr><td>3</td><td>Pejabat tapak – fail induk (Kerani Tapak)</td></tr><tr><td>4–5</td><td>Harta Perkasa · H&amp;Z</td></tr></table>
+    </div>
+  </div>
+</section>
+
+<section id="cop">
+  <h2><span class="no">7</span>Cop &amp; status</h2>
+  <p class="lead">Cop fizikal dan status dalam daftar. Status sentiasa ditulis dalam teks; warna hanya membantu imbasan.</p>
+  <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+    <span class="stamp">SALINAN TERKAWAL</span><span class="stamp">BATAL</span><span class="stamp b">SALINAN TIDAK TERKAWAL</span><span class="stamp b">DRAF – UNTUK SEMAKAN</span>
+  </div>
+  <div class="grid g2">
+    <div><h3>Titik pemeriksaan ITP</h3>
+      <span class="chip c-h">H</span> Hold – kerja berhenti hingga kelulusan bertulis S.O.<br>
+      <span class="chip c-w">W</span> Witness – S.O. dimaklumkan, boleh hadir<br>
+      <span class="chip c-r">R</span> Review – semakan rekod / permit</div>
+    <div><h3>Status daftar (RFA, NCR, ISU, submittal)</h3>
+      <span class="chip c-kemuka">Dikemukakan</span> <span class="chip c-lulus">Diluluskan</span> <span class="chip c-lulus">Selesai</span> <span class="chip c-tolak">Ditolak</span> <span class="chip c-tolak">Lewat</span> <span class="chip c-batal">Batal</span><br>
+      <span class="src">Format bersyarat Excel: <code>$J4="Dikemukakan"</code> → FFF2CC, dsb.</span></div>
+  </div>
+</section>
+
+<section id="jadual">
+  <h2><span class="no">8</span>Jadual</h2>
+  <p class="lead">Dua gaya: Word (garis hitam, pengepala biru pucat) dan Excel (pengepala navy teks putih, garis kelabu).</p>
+  <div class="grid g2">
+    <div><h3>Word – “Table Grid”</h3>
+      <table class="doc"><tr><th style="width:8%">Bil</th><th>Tindakan</th><th style="width:26%">Oleh</th><th style="width:24%">Rekod</th></tr>
+      <tr><td>1</td><td>Sediakan RFA dengan rujukan lukisan / BQ</td><td>Pengurus Projek</td><td>Borang RFA UTM</td></tr>
+      <tr><td>2</td><td>Kemukakan kepada S.O. bersama surat iringan</td><td>Pengurus Projek</td><td>KESB-QF-15</td></tr></table>
+      <p class="src">Pengepala tebal <code>DDEBF7</code>; badan 9.5 pt; pengepala diulang setiap muka surat.</p>
+    </div>
+    <div><h3>Excel – ITP / daftar</h3>
+      <table class="doc xl"><tr><th>No.</th><th>Aktiviti</th><th>Kriteria</th><th>Titik</th></tr>
+      <tr class="trade"><td colspan="4">2. KERJA SENI BINA – DINDING</td></tr>
+      <tr><td>2.1</td><td>Partition gipsum – kerangka</td><td>Jarak stud ikut lukisan</td><td style="background:var(--kemuka)">W</td></tr>
+      <tr><td>2.2</td><td>Pra-tutup servis M&amp;E</td><td>KESB-QF-08 lengkap</td><td style="background:var(--hold)">H</td></tr></table>
+      <p class="src">Tajuk lembaran 14 pt tebal di A1; baris pengepala dibekukan; tapis automatik aktif.</p>
+    </div>
+  </div>
+  <div class="band">BAHAGIAN B: PEMERIKSAAN OLEH S.O.</div>
+  <p class="src">Jalur bahagian borang – sel tunggal penuh lebar, <code>BDD7EE</code>, tebal. Gaya yang sama memisahkan kategori dalam daftar perundangan dan saluran.</p>
+</section>
+
+<section id="carta">
+  <h2><span class="no">9</span>Carta alir prosedur</h2>
+  <p class="lead">Format Lampiran K: lajur Peranan · Langkah · Rekod. Setiap SOP mempunyai satu carta.</p>
+  <div class="grid g2">
+  <div class="fc">
+    <div class="role">Pengurus Projek</div><div class="sh s">Mula: keperluan bahan dikenal pasti</div><div class="rec">KESB-QF-21</div>
+    <div></div><div class="arrow">▼</div><div></div>
+    <div class="role">Pengurus Projek</div><div class="sh">Kemukakan RFA kepada S.O.</div><div class="rec">Borang RFA; QF-15</div>
+    <div></div><div class="arrow">▼</div><div></div>
+    <div class="role">S.O.</div><div class="sh d">Diluluskan S.O.?</div><div class="loop">Tidak → pinda &amp; kemuka semula ↺</div>
+    <div></div><div class="arrow">▼ Ya</div><div></div>
+    <div class="role">Site Supervisor</div><div class="sh side">Cabang sisi: tanda DITOLAK, NCR pembekal</div><div class="rec">KESB-QF-04</div>
+    <div></div><div class="arrow">▼</div><div></div>
+    <div class="role">Pengurus Projek</div><div class="sh e">Tamat: bahan boleh dipesan</div><div class="rec">QF-21 dikemas kini</div>
+  </div>
+  <div style="font-size:13px">
+    <table class="doc"><tr><th>Simbol</th><th>Kod</th><th>Guna</th></tr>
+    <tr><td>Kapsul navy, teks putih</td><td><code>s</code> / <code>e</code></td><td>Mula / tamat</td></tr>
+    <tr><td>Segi empat biru pucat</td><td><code>p</code></td><td>Langkah proses (kata kerja dahulu)</td></tr>
+    <tr><td>Rombus kuning</td><td><code>d</code></td><td>Keputusan – soalan Ya/Tidak</td></tr>
+    <tr><td>Segi empat salmon</td><td><code>side</code></td><td>Cabang pengecualian</td></tr>
+    <tr><td>Anak panah merah <code>BF3326</code></td><td><code>loop</code></td><td>Gelung “Tidak” ke langkah terdahulu</td></tr></table>
+    Jalur tajuk navy 58 pt dengan tajuk 15 pt putih; pengaki: no. dokumen kiri, muka surat kanan. Penjana: <code>scripts/build_carta_alir.py</code>.
+  </div>
+  </div>
+</section>
+
+<section id="borang">
+  <h2><span class="no">10</span>Borang &amp; tandatangan</h2>
+  <p class="lead">Komponen tetap daripada build_borang.py: blok projek, jadual label, senarai semak Ya/Tidak/T.B., pilihan ☐ dan blok tandatangan.</p>
+  <div class="grid g2">
+    <div>
+      <div style="text-align:center;font-weight:bold">KARIM ENGINEERING SDN BHD</div>
+      <div style="text-align:center;font-weight:bold;font-size:16px;margin-bottom:6px">KESB-QF-02: NOTIS &amp; REKOD PEMERIKSAAN</div>
+      <table class="doc"><tr><td class="lbl">Projek</td><td>UTM Pakej 3 (FKOM &amp; FKM)</td></tr><tr><td class="lbl">Lokasi / ruang</td><td></td></tr></table>
+      <div style="font-size:12.5px;margin:6px 0">☐ Seni bina &nbsp;&nbsp; ☐ Mekanikal &nbsp;&nbsp; ☐ Elektrik</div>
+      <table class="doc"><tr><th>Perkara</th><th style="width:11%">Ya</th><th style="width:11%">Tidak</th><th style="width:11%">T.B.</th></tr><tr><td>Servis dikesan &amp; diasingkan</td><td></td><td></td><td></td></tr></table>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Blok tandatangan dokumen</h3>
+      <div class="sign">
+        <div><div class="h">Disediakan</div><div class="b">Tandatangan:<br>Nama:<br>Tarikh:</div></div>
+        <div><div class="h">Disemak</div><div class="b">Tandatangan:<br>Nama:<br>Tarikh:</div></div>
+        <div><div class="h">Diluluskan</div><div class="b">Tandatangan:<br>Nama:<br>Tarikh:</div></div>
+        <div><div class="h">Diterima (S.O.)</div><div class="b">Tandatangan &amp; cop:<br>Nama:<br>Tarikh:</div></div>
+      </div>
+      <p style="font-size:13px">Pengasingan tugas: penyedia ≠ penyemak ≠ pelulus. Tiada orang meluluskan kerja sendiri.</p>
+    </div>
+  </div>
+</section>
+
+<section id="nota">
+  <h2><span class="no">11</span>Nota &amp; penanda</h2>
+  <div class="grid g2">
+    <div>
+      <p><span class="psah">[PERLU SAHKAN: nama S.O.]</span> – merah <code>C00000</code> tebal, dalam kurungan siku, dengan perkara yang perlu disahkan. Dijana automatik daripada teks .md.</p>
+      <p><b>Rujukan kontrak</b> dalam kurungan selepas ayat: <i>(BQ A Prelim 11.0)</i>, <i>(SST para 9(c))</i>.</p>
+      <p><b>Cadangan KESB</b> / <b>sasaran dalaman KESB</b> – frasa tetap untuk amalan yang bukan syarat kontrak.</p>
+    </div>
+    <div>
+      <div class="callout"><b>Nota:</b> kotak nota berbingkai kiri navy untuk penjelasan, pengecualian atau rujukan silang.</div>
+      <div class="callout r"><b>Amaran:</b> bingkai merah – hanya untuk risiko K&amp;K, bangunan beroperasi, permit kerja dan larangan undang-undang.</div>
+    </div>
+  </div>
+</section>
+
+<section id="perundangan">
+  <h2><span class="no">12</span>Pematuhan perundangan</h2>
+  <p class="lead">Dokumen KESB menunjukkan kewajipan kontrak <i>dan</i> kewajipan undang-undang KESB sebagai <b>majikan</b> dan <b>kontraktor binaan</b>: JKKP, CIDB, Jabatan Tenaga Kerja, PERKESO / KWSP, JAS. Daftar yang sama dimuatkan dalam PQP Seksyen 4.4 dan SOM Seksyen 6.</p>
+  <div class="grid g3">
+    <div class="callout"><b>a) Daftar Perundangan.</b> Lajur tetap: Bil · Akta / peraturan · Keperluan · Bukti · SOP · Pemilik. Kategori A–E dipisah dengan jalur <code>BDD7EE</code>.</div>
+    <div class="callout"><b>b) Gaya sitasi.</b> Nama penuh + no. akta pada penggunaan pertama: <i>Akta Keselamatan dan Kesihatan Pekerjaan 1994 (Akta 514)</i>, seterusnya <i>OSHA 1994</i>. No. seksyen hanya selepas disemak dengan teks rasmi.</div>
+    <div class="callout"><b>c) Kebolehkesanan.</b> Blok tajuk setiap SOP ada baris <b>Perundangan</b> (cth <code>B1, B2, D1</code>) yang menunjuk ke daftar ini.</div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="callout r"><b>Larangan undang-undang</b> ditulis dalam kotak amaran: “Pekerja tanpa Kad CIDB yang sah atau PLKS yang sah tidak dibenarkan bekerja di tapak.”</div>
+    <div class="callout"><b>Nota “Akta Majikan”:</b> tiada akta dengan nama itu. Kewajipan majikan diliputi Akta Kerja 1955, PERKESO (Akta 4), SIP (Akta 800), KWSP (Akta 452), Akta 446 dan Perintah Gaji Minimum – kategori C &amp; D.</div>
+  </div>
+  <h3>Daftar Perundangan (ringkasan)</h3>
+<!-- AUTO:_daftar-perundangan.md -->
+<table class="doc legal">
+<tr><th>Bil</th><th>Akta / peraturan</th><th>Keperluan utama bagi projek</th><th>Bukti / rekod</th><th>SOP</th><th>Pemilik</th></tr>
+<tr class="kat"><td colspan="6"><b>A</b> <b>KESELAMATAN &amp; KESIHATAN PEKERJAAN (JKKP)</b></td></tr>
+<tr><td>A1</td><td>Akta Keselamatan dan Kesihatan Pekerjaan 1994 (Akta 514), termasuk pindaan 2022</td><td>Kewajipan am majikan kepada pekerja dan bukan pekerja (staf &amp; pelajar UTM di bangunan beroperasi); dasar KKP bertulis; penilaian risiko; lantikan Penyelaras KKP; kewajipan pekerja</td><td>Dasar KKP; HIRARC; surat lantikan SSS / Penyelaras KKP; minit jawatankuasa KKP</td><td>SOP-11</td><td>PM / SSS</td></tr>
+<tr><td>A2</td><td>Peraturan KKP (Pemberitahuan Kemalangan, Kejadian Berbahaya, Keracunan Pekerjaan dan Penyakit Pekerjaan) 2004 (NADOPOD)</td><td>Lapor kemalangan dan kejadian berbahaya kepada JKKP dalam tempoh ditetapkan; maklum S.O.</td><td>Notifikasi JKKP; daftar kemalangan; laporan siasatan</td><td>SOP-12</td><td>SSS / PM</td></tr>
+<tr><td>A3</td><td>Peraturan Keselamatan Bangunan dan Kerja Kejuruteraan Binaan (BOWEC) 1986 <span class="psah">[PERLU SAHKAN: status selepas Akta Kilang dan Jentera dimansuhkan 01/06/2024]</span></td><td>Perancah, kerja di tempat tinggi, perobohan, pengadang &amp; laluan selamat</td><td>Permit kerja; rekod pemeriksaan perancah / tangga</td><td>SOP-11; MS-01</td><td>Site Supervisor / SSS</td></tr>
+<tr><td>A4</td><td>Garis Panduan KKP dalam Industri Pembinaan (Pengurusan) – OSHCIM 2017</td><td>Pelan KKP projek; penyelarasan klien – pereka – kontraktor</td><td>Pelan KKP (SHE Plan)</td><td>SOP-11</td><td>PM</td></tr>
+<tr><td>A5</td><td>Peraturan KKP (USECHH) 2000; Peraturan KKP (Pendedahan Bising) 2019</td><td>Bahan kimia (cat, epoxy, pelekat, refrigeran): SDS &amp; penilaian; kawalan bising kerja roboh</td><td>Daftar bahan kimia; SDS; rekod PPE</td><td>SOP-11</td><td>SSS</td></tr>
+<tr><td>A6</td><td>Tataamalan Industri Kerja Selamat dalam Ruang Terkurung 2010</td><td>Ujian udara, permit masuk, orang yang diberi kuasa</td><td>KESB-QF-18; permit</td><td>SOP-11</td><td>SSS</td></tr>
+<tr><td>A7</td><td>MS 2318:2010 (perobohan); tinjauan asbestos sebelum roboh</td><td>Kaedah roboh selamat; asbestos dikendali oleh kontraktor berkelayakan</td><td>Laporan tinjauan; MS-01</td><td>SOP-11; MS-01</td><td>PM</td></tr>
+<tr class="kat"><td colspan="6"><b>B</b> <b>INDUSTRI PEMBINAAN (CIDB)</b></td></tr>
+<tr><td>B1</td><td>Akta Lembaga Pembangunan Industri Pembinaan Malaysia 1994 (Akta 520) – pendaftaran kontraktor</td><td>KESB dan setiap subkon berdaftar dengan CIDB dalam gred &amp; kategori yang sesuai sebelum mula kerja (SST para 9(g))</td><td>Sijil Perakuan Pendaftaran (PPK) CIDB yang sah</td><td>SOP-13</td><td>PM / Kerani Tapak</td></tr>
+<tr><td>B2</td><td>Akta 520 – personel binaan</td><td>Setiap pekerja binaan di tapak memegang Kad Hijau / Kad CIDB yang sah; pekerja mahir diperakui CIDB jika dikehendaki <span class="psah">[PERLU SAHKAN: keperluan SKP bagi trade projek]</span></td><td>Daftar pekerja tapak; salinan kad</td><td>SOP-13</td><td>Kerani Tapak</td></tr>
+<tr><td>B3</td><td>Akta 520 – pendaftaran projek &amp; levi</td><td>Projek diisytihar kepada CIDB dan levi dibayar <span class="psah">[PERLU SAHKAN: kadar &amp; status bayaran oleh HQ]</span></td><td>Resit levi; Borang CIDB</td><td>–</td><td>HQ KESB</td></tr>
+<tr><td>B4</td><td>Akta 520 – standard binaan; CIS 7 QLASSIC</td><td>Bahan binaan dalam Jadual Akta 520 diperakui; penilaian QLASSIC <span class="psah">[PERLU SAHKAN: sasaran skor]</span></td><td>Sijil pematuhan bahan; laporan QLASSIC</td><td>SOP-02</td><td>PM</td></tr>
+<tr><td>B5</td><td>Akta Pembayaran dan Ajudikasi Industri Pembinaan 2012 (Akta 746, CIPAA)</td><td>Bayaran kepada subkon &amp; pembekal ikut kontrak; tuntutan bayaran bertulis</td><td>Rekod tuntutan &amp; bayaran</td><td>–</td><td>HQ KESB</td></tr>
+<tr class="kat"><td colspan="6"><b>C</b> <b>PEKERJAAN (JABATAN TENAGA KERJA)</b></td></tr>
+<tr><td>C1</td><td>Akta Kerja 1955 (Akta 265), termasuk pindaan 2022</td><td>Kontrak perkhidmatan bertulis; had waktu kerja mingguan; kerja lebih masa &amp; hari rehat; cuti; bayaran gaji dalam tempoh ditetapkan; daftar pekerja</td><td>Daftar pekerja; rekod kehadiran &amp; lebih masa; slip gaji</td><td>SOP-14</td><td>HQ KESB / subkon</td></tr>
+<tr><td>C2</td><td>Akta Majlis Perundingan Gaji Negara 2011 (Akta 732) &amp; Perintah Gaji Minimum semasa</td><td>Gaji tidak kurang daripada kadar gaji minimum semasa <span class="psah">[PERLU SAHKAN: kadar terkini]</span></td><td>Slip gaji</td><td>SOP-14</td><td>HQ KESB / subkon</td></tr>
+<tr><td>C3</td><td>Akta Imigresen 1959/63 (Akta 155)</td><td>Pekerja asing memegang Pas Lawatan Kerja Sementara (PLKS) yang sah untuk majikan &amp; sektor pembinaan</td><td>Salinan pasport &amp; PLKS</td><td>SOP-13</td><td>Kerani Tapak / subkon</td></tr>
+<tr><td>C4</td><td>Akta Standard Minimum Perumahan, Penginapan dan Kemudahan Pekerja 1990 (Akta 446)</td><td>Jika majikan / subkon menyediakan penginapan: Perakuan Penginapan yang sah</td><td>Perakuan Penginapan</td><td>SOP-15</td><td>HQ KESB / subkon</td></tr>
+<tr class="kat"><td colspan="6"><b>D</b> <b>KEWAJIPAN MAJIKAN – CARUMAN &amp; PERLINDUNGAN</b></td></tr>
+<tr><td>D1</td><td>Akta Keselamatan Sosial Pekerja 1969 (Akta 4) – PERKESO</td><td>Semua pekerja (termasuk pekerja asing) didaftar dan dicarum; syarat SST para 4</td><td>Penyata caruman bulanan; resit</td><td>SOP-14</td><td>HQ KESB / subkon</td></tr>
+<tr><td>D2</td><td>Akta Sistem Insurans Pekerjaan 2017 (Akta 800)</td><td>Caruman SIP bagi pekerja yang layak</td><td>Penyata caruman</td><td>SOP-14</td><td>HQ KESB / subkon</td></tr>
+<tr><td>D3</td><td>Akta Kumpulan Wang Simpanan Pekerja 1991 (Akta 452) – KWSP</td><td>Caruman KWSP pekerja yang layak; syarat SST para 4</td><td>Penyata caruman</td><td>SOP-14</td><td>HQ KESB / subkon</td></tr>
+<tr class="kat"><td colspan="6"><b>E</b> <b>ALAM SEKITAR, SISA &amp; UTILITI</b></td></tr>
+<tr><td>E1</td><td>Akta Kualiti Alam Sekeliling 1974 (Akta 127) &amp; Peraturan Kualiti Alam Sekeliling (Buangan Terjadual) 2005</td><td>Buangan terjadual (lampu pendarfluor, minyak, bekas kimia) diurus melalui pengangkut &amp; premis berlesen JAS</td><td>Consignment note (e-SWIS)</td><td>SOP-08</td><td>Site Supervisor</td></tr>
+<tr><td>E2</td><td>Akta Pengurusan Sisa Pepejal dan Pembersihan Awam 2007 (Akta 672)</td><td>Sisa binaan dibuang ke tapak pelupusan yang dibenarkan</td><td>Tiket pelupusan; KESB-QF-22</td><td>SOP-08</td><td>Site Supervisor</td></tr>
+<tr><td>E3</td><td>Akta Bekalan Elektrik 1990 (Akta 447) &amp; Peraturan-Peraturan Elektrik 1994</td><td>Kerja elektrik oleh orang kompeten berdaftar Suruhanjaya Tenaga (PW4)</td><td>Surat lantikan &amp; perakuan kekompetenan</td><td>SOP-04</td><td>PM / H&amp;Z</td></tr>
+<tr><td>E4</td><td>Akta Perkhidmatan Bomba 1988 (Akta 341); UBBL 1984</td><td>Sistem pencegah kebakaran dan laluan keluar kekal berfungsi di bangunan beroperasi</td><td>Permit pengasingan zon (KESB-QF-19)</td><td>SOP-11</td><td>SSS / Penyelaras M&amp;E</td></tr>
+</table>
+<!-- /AUTO -->
+  <p class="src">Sumber tunggal: <code>sistem-reka-bentuk/sumber/_daftar-perundangan.md</code>. Disemak setiap 6 bulan atau apabila undang-undang dipinda. Ringkasan untuk kawalan dokumen, bukan nasihat undang-undang – sahkan teks dan pindaan terkini dengan JKKP, CIDB, JTK dan HQ KESB.</p>
+</section>
+
+<section id="saluran">
+  <h2><span class="no">13</span>Saluran komunikasi &amp; notifikasi</h2>
+  <p class="lead">Pilihan saluran untuk menyampaikan notifikasi dan maklumat, dengan saluran utama bagi setiap jenis maklumat. Kod saluran (R, P, D, K) dirujuk dalam SOP, cth “R1 + R3”. Dimuatkan dalam PQP Seksyen 5.5 dan SOM Seksyen 7.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+    <span class="chip" style="background:var(--navy);color:#fff">R · Rasmi kontrak</span>
+    <span class="chip" style="background:var(--lulus)">P · Pengguna bangunan</span>
+    <span class="chip" style="background:var(--biru-pucat)">D · Dalaman tapak</span>
+    <span class="chip" style="background:var(--hold)">K · Kecemasan &amp; statutori</span>
+  </div>
+<!-- AUTO:_saluran-komunikasi.md -->
+<p><b>a) Pilihan saluran</b></p>
+<table class="doc legal">
+<tr><th>Kod</th><th>Saluran</th><th>Tahap</th><th>Penerima</th><th>Pengirim</th><th>Rekod / bukti</th></tr>
+<tr class="kat"><td colspan="6"><b>R</b> <b>RASMI KONTRAK – mengikat; satu-satunya saluran untuk arahan, kelulusan &amp; tuntutan</b></td></tr>
+<tr><td>R1</td><td>Surat rasmi berkepala KESB</td><td>Rasmi kontrak</td><td>S.O., UTM, HQ KESB</td><td>Pengurus Projek</td><td>Fail surat; s.k. tetap</td></tr>
+<tr><td>R2</td><td>Borang UTM / KESB (RFA UTM, KESB-QF-02, KESB-QF-15)</td><td>Rasmi kontrak</td><td>S.O.</td><td>Pengurus Projek</td><td>Daftar RFA / pemeriksaan</td></tr>
+<tr><td>R3</td><td>E-mel rasmi</td><td>Rasmi (salinan lembut, bukti masa)</td><td>Pegawai S.O. yang dinamakan, HQ, subkon</td><td>Pengurus Projek / Kerani Tapak</td><td>Peti e-mel projek</td></tr>
+<tr><td>R4</td><td>Site Diary UTM</td><td>Rasmi harian</td><td>S.O.</td><td>Site Supervisor / Pengurus Projek</td><td>Site Diary UTM</td></tr>
+<tr><td>R5</td><td>Mesyuarat tapak &amp; koordinasi mingguan</td><td>Rasmi (melalui minit)</td><td>S.O., subkon, pasukan</td><td>Pengurus Projek</td><td>Minit mesyuarat</td></tr>
+<tr class="kat"><td colspan="6"><b>P</b> <b>PENGGUNA BANGUNAN – makluman &amp; aduan</b></td></tr>
+<tr><td>P1</td><td>Group WhatsApp blok (saluran rasmi dengan wakil pengguna, PQP Seksyen 8.4)</td><td>Makluman / aduan</td><td>Wakil pengguna blok</td><td>Admin group (PM; Kerani Tapak)</td><td>Tangkap layar; Log Isu Pengguna</td></tr>
+<tr><td>P2</td><td>Notis bercetak di pintu ruang &amp; laluan (KESB-QF-29)</td><td>Makluman</td><td>Staf &amp; pelajar UTM</td><td>Site Supervisor</td><td>Foto notis dipasang</td></tr>
+<tr class="kat"><td colspan="6"><b>D</b> <b>DALAMAN TAPAK – arahan harian</b></td></tr>
+<tr><td>D1</td><td>Taklimat pagi / toolbox talk</td><td>Arahan &amp; keselamatan</td><td>Pekerja, subkon</td><td>Site Supervisor / SSS</td><td>Rekod kehadiran toolbox</td></tr>
+<tr><td>D2</td><td>Group WhatsApp pasukan tapak / subkon</td><td>Arahan operasi</td><td>Pasukan dalaman, wakil subkon</td><td>Pengurus Projek / Site Supervisor</td><td>Disusuli bertulis jika melibatkan kos, mutu atau masa</td></tr>
+<tr><td>D3</td><td>Papan notis pejabat &amp; tapak</td><td>Makluman tetap</td><td>Semua di tapak</td><td>Kerani Tapak</td><td>Senarai notis dipapar</td></tr>
+<tr class="kat"><td colspan="6"><b>K</b> <b>KECEMASAN &amp; STATUTORI</b></td></tr>
+<tr><td>K1</td><td>Panggilan telefon terus</td><td>Kecemasan sahaja</td><td>PM, SSS, S.O., bomba / ambulans</td><td>Sesiapa yang menemui</td><td>Disusuli bertulis dalam 24 jam</td></tr>
+<tr><td>K2</td><td>Portal / notifikasi pihak berkuasa (JKKP, CIDB, JAS e-SWIS)</td><td>Statutori</td><td>Pihak berkuasa</td><td>SSS / Pengurus Projek</td><td>Resit / no. rujukan portal</td></tr>
+</table>
+<p><b>b) Matriks maklumat dan saluran</b></p>
+<table class="doc legal">
+<tr><th>Maklumat / notifikasi</th><th>Saluran utama</th><th>Saluran sokongan</th><th>Tempoh</th></tr>
+<tr><td>Pertanyaan teknikal / percanggahan dokumen kepada S.O.</td><td>R1 Surat</td><td>R3 E-mel</td><td>Sebaik dikenal pasti; kerja berkaitan tidak dimulakan</td></tr>
+<tr><td>Kelulusan bahan &amp; shop drawing</td><td>R2 Borang RFA UTM</td><td>R1 Surat iringan; R3</td><td>Shop drawing ≥ 1 bulan sebelum kerja (Prelim 11.0)</td></tr>
+<tr><td>Notis pemeriksaan bersama S.O.</td><td>R2 KESB-QF-02</td><td>R3 E-mel; telefon pegawai S.O.</td><td><span class="psah">[PERLU SAHKAN: notis minimum]</span></td></tr>
+<tr><td>Kerja yang mengganggu pengguna (bising, tutup laluan, putus bekalan)</td><td>P1 Blast WhatsApp blok</td><td>P2 Notis di pintu ruang</td><td><span class="psah">[PERLU SAHKAN]</span> hari bekerja sebelum kerja</td></tr>
+<tr><td>Aduan pengguna</td><td>P1 Group WhatsApp blok</td><td>Log Isu Pengguna (no. ISU-xxx)</td><td>Akui dalam hari yang sama</td></tr>
+<tr><td>Henti kerja tidak dijangka</td><td>K1 Telefon PM / S.O.</td><td>R1 Surat kepada S.O.; P1 makluman</td><td>Surat dalam 1 hari bekerja</td></tr>
+<tr><td>Kemalangan / kejadian berbahaya</td><td>K1 Telefon PM &amp; SSS</td><td>K2 Notifikasi JKKP; R1 Surat S.O.</td><td>Serta-merta; JKKP ikut NADOPOD</td></tr>
+<tr><td>Ketidakakuran (NCR)</td><td>R2 KESB-QF-04</td><td>D2 kepada pelaksana; R5</td><td>NCR dalam 1 hari bekerja</td></tr>
+<tr><td>Arahan kerja harian kepada pekerja</td><td>D1 Taklimat pagi</td><td>D2 Group pasukan</td><td>Setiap pagi</td></tr>
+<tr><td>Arahan kepada subkon (mutu, kos, masa)</td><td>R1 Surat / arahan bertulis KESB</td><td>R3 E-mel; R5</td><td>Sebelum kerja dilaksana</td></tr>
+<tr><td>Dokumen terkawal baharu / revisi</td><td>R2 Transmittal KESB-QF-15</td><td>R3 E-mel; D3</td><td>Semasa edaran</td></tr>
+<tr><td>Kemajuan kerja</td><td>Laporan kemajuan bulanan</td><td>R5 Mesyuarat; R4 Site Diary</td><td>Bulanan / mingguan</td></tr>
+<tr><td>Peringatan tugasan lewat</td><td>R3 E-mel</td><td>D2 WhatsApp</td><td>Sebelum mesyuarat mingguan</td></tr>
+</table>
+<p><b>c) Format mesej notifikasi standard</b> (WhatsApp, e-mel, notis)</p>
+<table class="doc legal">
+<tr><th>Medan</th><th>Isi</th></tr>
+<tr><td>Tajuk</td><td>MAKLUMAN KERJA / MAKLUMAN ISU / HENTI KERJA – no. rujukan (cth ISU-012)</td></tr>
+<tr><td>Lokasi</td><td>Blok, aras, no. ruang</td></tr>
+<tr><td>Perkara</td><td>Apa yang berlaku atau akan dilaksana</td></tr>
+<tr><td>Kesan kepada pengguna</td><td>Bising, laluan ditutup, bekalan elektrik / air diputuskan, ruang tidak boleh digunakan</td></tr>
+<tr><td>Tindakan</td><td>Apa yang KESB lakukan; apa yang pengguna perlu lakukan</td></tr>
+<tr><td>Tempoh</td><td>Tarikh &amp; masa mula – jangkaan selesai (24 jam)</td></tr>
+<tr><td>Hubungi</td><td>Jawatan &amp; no. telefon pejabat tapak (bukan nombor peribadi kecuali dipersetujui)</td></tr>
+</table>
+<div class="callout r">Saluran D2 (WhatsApp) dan K1 (telefon) tidak menggantikan saluran rasmi. Arahan S.O. yang diterima secara lisan atau melalui WhatsApp disahkan secara bertulis (R1 / R4) sebelum kerja berubah.</div>
+<!-- /AUTO -->
+  <p class="src">Sumber tunggal: <code>sistem-reka-bentuk/sumber/_saluran-komunikasi.md</code>.</p>
+</section>
+
+<section id="pqp">
+  <h2><span class="no">14</span>Struktur PQP (CP-QC)</h2>
+  <p class="lead">Ikut CP-QC Rev 5 – 15 seksyen, selari MS ISO 9001:2015 dan BQ A Prelim 3.0.</p>
+  <div class="tree">Kulit · Blok kawalan · Sejarah revisi · Senarai edaran
+1.  Pengenalan (tujuan, skop, butiran kontrak, pematuhan kewajipan, konteks, status)
+2.  Polisi &amp; Objektif Kualiti (polisi, objektif &amp; KPI, risiko &amp; peluang)
+3.  Organisasi Projek
+4.  Dokumen Rujukan (kontrak, standard, daftar lukisan, <b>perundangan terpakai</b>)
+5.  Kawalan Dokumen &amp; Rekod (proses, penyerahan bermasa, saluran S.O., Site Diary UTM, <b>saluran komunikasi &amp; notifikasi</b>)
+6.  Pengurusan Submittal
+7.  Kawalan Subkontraktor, Pasukan Dalaman &amp; Pembekal
+8.  Inspection &amp; Test Plan (aliran, pemeriksaan bersama S.O., bangunan beroperasi, lokasi, henti kerja, sisa)
+9.  Kawalan Bahan &amp; Ujian
+10. Kawalan Peralatan Ukur &amp; Ujian
+11. Non-Conformance &amp; Tindakan Pembetulan
+12. Audit Dalaman &amp; Semakan Pengurusan
+13. Latihan &amp; Kompetensi
+14. Penyerahan &amp; DLP
+15. Lampiran (senarai lampiran, daftar isu terbuka, senarai borang)</div>
+</section>
+
+<section id="som">
+  <h2><span class="no">15</span>Struktur SOM &amp; SOP</h2>
+  <p class="lead">SOM ialah manual harian untuk pasukan tapak dan subkon: <i>bagaimana</i> melaksanakan prosedur yang ditetapkan dalam PQP. PQP menyatakan <i>apa</i> dan <i>siapa</i>; SOM menyatakan <i>langkah demi langkah</i>.</p>
+  <div class="grid g2">
+    <div class="tree">SOM KESB/UTM-P3/SOM/001
+Kulit · Blok kawalan · Sejarah revisi · Senarai edaran
+1. Tujuan &amp; penggunaan manual
+2. Hubungan dengan PQP, MS &amp; ITP
+3. Peranan &amp; kuasa (matriks RACI)
+4. Indeks SOP
+5. SOP-01 … SOP-15
+6. Daftar perundangan (sama dengan PQP 4.4)
+7. Saluran komunikasi &amp; notifikasi (sama dengan PQP 5.5)
+8. Borang &amp; daftar (rujuk KESB-QF)
+9. Istilah &amp; singkatan</div>
+    <div class="tree">Setiap SOP (KESB/UTM-P3/SOP-nn)
+Blok tajuk: no., tajuk, rev, tarikh, pemilik, <b>perundangan</b>
+1. Tujuan
+2. Skop (bila terpakai / tidak)
+3. Rujukan (klausa kontrak, CP-QC seksyen)
+4. Tanggungjawab (jadual peranan)
+5. Prosedur (jadual Bil · Tindakan · Oleh · Masa · Rekod)
+6. Carta alir (simbol Seksyen 9)
+7. Rekod &amp; penyimpanan
+Blok tandatangan</div>
+  </div>
+  <h3>Indeks SOP (dipetakan kepada carta Lampiran K)</h3>
+  <table class="doc">
+    <tr><th style="width:11%">SOP</th><th>Tajuk</th><th style="width:22%">PQP</th><th style="width:26%">Borang utama</th></tr>
+    <tr><td>SOP-01</td><td>Kawalan dokumen &amp; revisi</td><td>Seksyen 5.1</td><td>Daftar Dokumen; KESB-QF-15</td></tr>
+    <tr><td>SOP-02</td><td>Kelulusan bahan &amp; shop drawing (RFA UTM)</td><td>5.3, 6</td><td>Borang RFA; KESB-QF-01, QF-21</td></tr>
+    <tr><td>SOP-03</td><td>Pesanan, penerimaan &amp; pengeluaran bahan</td><td>7.1, 9</td><td>KESB-QF-27, QF-03, QF-28</td></tr>
+    <tr><td>SOP-04</td><td>Pemeriksaan kerja &amp; pemeriksaan bersama S.O.</td><td>8.1, 8.2</td><td>KESB-QF-02, QF-08</td></tr>
+    <tr><td>SOP-05</td><td>Ketidakakuran (NCR)</td><td>11</td><td>KESB-QF-04; Daftar NCR</td></tr>
+    <tr><td>SOP-06</td><td>Aduan pengguna (WhatsApp → Log Isu)</td><td>8.4</td><td>Log Isu Pengguna</td></tr>
+    <tr><td>SOP-07</td><td>Henti kerja tidak dijangka</td><td>8.5</td><td>Surat / KESB-QF-15</td></tr>
+    <tr><td>SOP-08</td><td>Pengurusan sisa</td><td>8.6</td><td>KESB-QF-22</td></tr>
+    <tr><td>SOP-09</td><td>Penyerahan &amp; penyerahan semula ruang</td><td>14.1</td><td>KESB-QF-06, QF-09, QF-11, QF-14</td></tr>
+    <tr><td>SOP-10</td><td>Site Diary UTM &amp; laporan harian</td><td>5.4</td><td>Site Diary UTM</td></tr>
+    <tr><td colspan="4" style="background:var(--biru-sederhana);font-weight:bold">Prosedur perundangan (Seksyen 12)</td></tr>
+    <tr><td>SOP-11</td><td>HIRARC, permit kerja &amp; bahan kimia – OSHA 1994, BOWEC, USECHH</td><td>4.4, 8.3</td><td>HIRARC; permit; KESB-QF-18, QF-19</td></tr>
+    <tr><td>SOP-12</td><td>Kemalangan &amp; kejadian berbahaya – notifikasi JKKP (NADOPOD)</td><td>4.4, 8.3</td><td>Notifikasi JKKP; daftar kemalangan</td></tr>
+    <tr><td>SOP-13</td><td>Kemasukan pekerja – Kad CIDB, PPK subkon, PLKS</td><td>4.4, 7</td><td>Daftar Pekerja Tapak</td></tr>
+    <tr><td>SOP-14</td><td>Rekod pekerja, gaji &amp; caruman – Akta Kerja, gaji minimum, PERKESO, SIP, KWSP</td><td>4.4, 7</td><td>Penyata bulanan subkon</td></tr>
+    <tr><td>SOP-15</td><td>Penginapan pekerja – Akta 446</td><td>4.4, 7</td><td>Perakuan Penginapan</td></tr>
+  </table>
+</section>
+
+<section id="bahasa">
+  <h2><span class="no">16</span>Bahasa &amp; penulisan</h2>
+  <div class="grid g2">
+    <div class="do"><b>Buat</b>
+      • Bahasa Melayu; istilah teknikal Inggeris dikekalkan tanpa condong (method statement, shop drawing, T&amp;C).<br>
+      • Langkah prosedur bermula dengan kata kerja: “Kemukakan…”, “Rekod…”.<br>
+      • Nyatakan siapa, bila (hari bekerja) dan rekod bagi setiap langkah.<br>
+      • Tarikh <code>DD/MM/YYYY</code>; wang <code>RM9,999.00</code>; masa 24 jam.<br>
+      • Jawatan ikut carta organisasi kontrak sahaja.</div>
+    <div class="dont"><b>Jangan</b>
+      • Teka maklumat – gunakan [PERLU SAHKAN].<br>
+      • Guna jawatan yang tiada dalam kontrak (cth “Wakil Kualiti” telah dibuang dalam Rev 5).<br>
+      • Ayat pasif tanpa pelaku (“akan disemak”).<br>
+      • Cetak harga BQ, nilai kontrak atau isi SST dalam SOM/SOP untuk subkon.<br>
+      • Singkatan tanpa takrif pada penggunaan pertama.</div>
+  </div>
+  <h3>Istilah tetap</h3>
+  <table class="doc"><tr><th style="width:22%">Istilah</th><th>Maksud dalam dokumen</th></tr>
+  <tr><td>S.O.</td><td>Pegawai Penguasa (Superintending Officer), UTM</td></tr>
+  <tr><td>RFA</td><td>Borang Permohonan Pengesahan Bahan UTM – bahan &amp; shop drawing sahaja</td></tr>
+  <tr><td>WIR / pemeriksaan bersama</td><td>KESB-QF-02 Bahagian A (notis) &amp; B (rekod S.O.)</td></tr>
+  <tr><td>Pasukan dalaman KESB</td><td>Pekerja am &amp; pasukan A/C di bawah Site Supervisor</td></tr></table>
+</section>
+
+<section id="fail">
+  <h2><span class="no">17</span>Fail &amp; penjanaan</h2>
+  <div class="tree">sistem-reka-bentuk/
+├── index.html                       ← halaman ini
+├── Panduan-Gaya-Dokumen-KESB.docx   ← panduan gaya (Word)
+├── Templat-PQP.docx                 ← templat kosong PQP (gaya terpasang)
+├── Templat-SOM.docx                 ← templat SOM + SOP contoh
+└── sumber/
+    ├── panduan-gaya.md, templat-pqp.md, templat-som.md
+    ├── _daftar-perundangan.md       ← daftar perundangan (sumber tunggal)
+    └── _saluran-komunikasi.md       ← saluran komunikasi &amp; notifikasi (sumber tunggal)
+scripts/build_reka_bentuk_docx.py    ← jana .docx daripada .md dengan token di atas</div>
+  <p style="font-size:13px">Jana semula: <code>py -3.12 scripts/build_reka_bentuk_docx.py</code> – menjana ketiga-tiga fail Word dan mengisi semula blok daftar perundangan &amp; saluran dalam halaman ini. Templat Word mengandungi gaya bernama (Heading 1–3, Jadual KESB, Nota KESB, Amaran KESB, PERLU SAHKAN) supaya dokumen baharu diformat dengan memilih gaya, bukan format manual.</p>
+</section>
+
+<footer>Sistem Reka Bentuk Dokumen KESB · UTM Pakej 3 · v1.0 · Disediakan untuk semakan Pengurus Projek</footer>
+</main>
+</div>
+</body>
+</html>
